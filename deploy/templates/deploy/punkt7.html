@@ -1,0 +1,15 @@
+{% extends 'deploy/base.html' %}
+{% block content %}
+
+<h1>PUNKT 7</h1>
+<br>
+<h4>7. Konfigurer miljøvariabler<br>
+Fly bruger fly secrets. Du kan sætte din Django SECRET_KEY, debug flag, osv.:<br>
+<br>
+<h6>bash</h6>
+<br>
+
+fly secrets set SECRET_KEY='din-super-hemmelige-nøgle'<br>
+Hvis du bruger environment variables til database, email, osv., sæt dem her også.<br></h4>
+
+{% endblock content %}

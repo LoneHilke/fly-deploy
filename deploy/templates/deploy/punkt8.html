@@ -1,0 +1,15 @@
+{% extends 'deploy/base.html' %}
+{% block content %}
+
+<h1>PUNKT 8</h1><br>
+<br>
+<h4>8. Kør migreringer og collectstatic<br>
+Efter deploy (næste trin), skal du køre disse kommandoer på serveren:<br>
+
+<h6>bash</h6><br>
+<br>
+fly ssh console<br>
+python manage.py migrate<br>
+python manage.py collectstatic --noinput<br>
+exit<br></h4>
+{% endblock content %}

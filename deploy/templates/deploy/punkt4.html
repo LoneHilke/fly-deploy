@@ -1,0 +1,22 @@
+{% extends 'deploy/base.html' %}
+{% block content %}
+
+<h1>PUNKT 4</h1>
+<br>
+<h4>4. Initialiser Fly<br>
+<h6>bash</h6>
+<br>
+fly launch<br>
+Vælg:<br>
+
+Et navn til appen.<br>
+
+Region (vælg den nærmeste, f.eks. ams for Amsterdam).<br>
+
+Fly spørger om du vil oprette en fly.toml fil – svar ja.<br>
+
+Vælg nej til databasen her (vi gør det separat for PostgreSQL).<br>
+
+Dette opretter fly.toml, Dockerfile, og andre nødvendige filer.</h4>
+
+{% endblock content %}

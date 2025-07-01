@@ -1,0 +1,28 @@
+{% extends 'deploy/base.html' %}
+{% block content %}
+
+<h1>PUNKT 6</h1>
+<br>
+<h4>6. Tilpas Dockerfile (hvis ikke allerede lavet)<br>
+Fly kan bruge Docker til at bygge din app. Her er et eksempel på en minimal Dockerfile:<br>
+<br>
+dockerfile<br>
+<br>
+# Dockerfile<br>
+FROM python:3.11-slim<br>
+<br>
+ENV PYTHONDONTWRITEBYTECODE 1<br>
+ENV PYTHONUNBUFFERED 1<br>
+<br>
+WORKDIR /app<br>
+
+COPY requirements.txt .<br>
+RUN pip install --upgrade pip && pip install -r requirements.txt<br>
+<br>
+COPY . .
+<br>
+CMD ["gunicorn", "dinprojekt.wsgi", "--bind", "0.0.0.0:8000"]<br>
+Erstat dinprojekt med navnet på dit Django-projekt (den mappe der indeholder settings.py).</h4>
+
+
+{% endblock content %}

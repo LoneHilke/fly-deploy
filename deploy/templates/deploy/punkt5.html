@@ -1,0 +1,23 @@
+{% extends 'deploy/base.html' %}
+{% block content %}
+
+<h1>PUNKT 5</h1>>
+<br>
+<h4>5. Tilføj PostgreSQL (valgfrit men normalt nødvendigt)
+<h6>bash<h6><br>
+<br>
+fly postgres create<br>
+Vælg samme region.<br>
+<br>
+Fly opretter en separat app til databasen.<br>
+<br>
+Efter oprettelsen vil Fly vise en kommando, f.eks.:<br>
+<br>
+<h6>bash</h6><br>
+<br>
+fly postgres attach --app din-app-navn din-postgres-navn<br>
+Kør den for at linke din app til databasen.</h4>
+
+
+
+{% endblock content %}
