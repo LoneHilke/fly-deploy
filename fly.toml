@@ -1,21 +1,43 @@
-# fly.toml app configuration file generated for ideer-til-dark-morning-5968 on 2025-06-30T22:55:52+02:00
+# fly.toml app configuration file generated for fly-deploy-hidden-flower-5 on 2025-07-02T11:18:15+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "fly-deploy"
+app = 'fly-deploy-hidden-flower-5'
+primary_region = 'arn'
+console_command = '/code/manage.py shell'
+
+[build]
 
 [env]
-  DEBUG = "False"
+  DEBUG = 'False'
+  PORT = '8000'
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
 
 [[services]]
+  protocol = 'tcp'
   internal_port = 8000
-  protocol = "tcp"
 
   [[services.ports]]
-    handlers = ["http"]
     port = 80
+    handlers = ['http']
 
   [[services.ports]]
-    handlers = ["tls", "http"]
     port = 443
+    handlers = ['tls', 'http']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
+
+[[statics]]
+  guest_path = '/code/static'
+  url_prefix = '/static/'
