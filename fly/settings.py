@@ -92,6 +92,14 @@ NAV_MENU_LEFT = [
         "name": "Punkt 10",
         "url": "/punkt10",
     },
+    {
+        "name": "Ekstra",
+        "url": "/ekstra",
+    },
+    {
+        "name": "Andre fejl",
+        "url": "/andet",
+    },
 ]
 NAV_MENU_RIGHT = [
     {

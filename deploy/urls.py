@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import Forside,Ind,Punkt1,Punkt2,Punkt3,Punkt4,Punkt5,Punkt6,Punkt7,Punkt8,Punkt9,Punkt10
+from .views import Forside,Ind,Punkt1,Punkt2,Punkt3,Punkt4,Punkt5,Punkt6,Punkt7,Punkt8,Punkt9,Punkt10,Ekstra,Andet
 
 
 urlpatterns = [
@@ -16,5 +16,7 @@ urlpatterns = [
   path('punkt8', Punkt8.as_view(), name='punkt8'),
   path('punkt9', Punkt9.as_view(), name='punkt9'),
   path('punkt10', Punkt10.as_view(), name='punkt10'),
+  path('ekstra', Ekstra.as_view(), name='ekstra'),
+  path('andet', Andet.as_view(), name='andet'),
   
 ] 

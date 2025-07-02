@@ -48,3 +48,11 @@ class Punkt9(View):
 class Punkt10(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'deploy/punkt10.html')
+    
+class Ekstra(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'deploy/ekstra.html')
+    
+class Andet(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'deploy/andet.html')

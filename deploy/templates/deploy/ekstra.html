@@ -1,0 +1,74 @@
+{% extends 'deploy/base.html' %}
+{% block content %}
+
+<h1>Ekstra hjælp til Dockerfile, Sittings.py m.m.</h1>
+<br>
+<h2>DOCKER</h2>
+<br>
+<h4>✅ Tilpasset Dockerfile til Fly.io<br>
+Her er en minimalistisk Dockerfile til din brugssituation:<br>
+<br>
+Dockerfile
+<br>
+# Dockerfile<br>
+FROM python:3.11-slim<br>
+
+ENV PYTHONDONTWRITEBYTECODE 1<br>
+ENV PYTHONUNBUFFERED 1<br>
+
+WORKDIR /app<br>
+
+COPY requirements.txt .<br>
+RUN pip install --upgrade pip && pip install -r requirements.txt<br>
+<br>
+COPY . .<br>
+<br>
+# Brug WhiteNoise til statiske filer, og Gunicorn som server<br>
+CMD ["gunicorn", "ditprojekt.wsgi:application", "--bind", "0.0.0.0:8000"]<br>
+Erstat ditprojekt med navnet på din Django-projektmappe (den mappe hvor settings.py ligger).</h4><br>
+<br>
+<h2>SITTINGS.PY</h2>
+<br>
+<h4>✅ Tilpas settings.py<br>
+Hvis du ikke bruger database, skal du også:<br>
+<br>
+1. Kommentere eller fjerne databasen<br>
+python<br>
+<br>
+# settings.py<br>
+DATABASES = {<br>
+    'default': {<br>
+        'ENGINE': 'django.db.backends.dummy'<br>
+    }<br>
+}<br>
+Eller bare:<br>
+<br>
+python<br>
+<br>
+DATABASES = {}<br>
+2. Brug WhiteNoise til statiske filer<br>
+Tilføj i MIDDLEWARE:<br>
+<br>
+python<br>
+<br>
+"whitenoise.middleware.WhiteNoiseMiddleware",<br>
+Og nederst i settings.py:<br>
+<br>
+python<br>
+<br>
+STATIC_URL = "/static/"<br>
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")</h4>
+<br>
+<h4>✅ Efter deploy: collectstatic<br>
+Efter fly deploy, skal du kun køre:<br>
+<br>
+<h6>bash</h6>
+
+<h4>fly ssh console<br>
+python manage.py collectstatic --noinput<br>
+exit<br>
+Ingen migrate, fordi du ikke bruger database.</h4>
+
+
+
+{% endblock content %}

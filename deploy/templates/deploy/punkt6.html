@@ -23,6 +23,49 @@ COPY . .
 <br>
 CMD ["gunicorn", "dinprojekt.wsgi", "--bind", "0.0.0.0:8000"]<br>
 Erstat dinprojekt med navnet på dit Django-projekt (den mappe der indeholder settings.py).</h4>
+<br>
+<br>
+<h3><u>Jeg havde problem med 'requirements.txt', og fik denne hjælp</u></h3><br>
+<h4>✅ Trin: Opret requirements.txt<br>
+Gå til roden af dit projekt i terminalen (hvor manage.py ligger).<br>
+<br>
+Kør denne kommando:<br>
+<br>
+bash
+<br>
+pip freeze > requirements.txt<br>
+Dette gemmer alle de installerede pakker (inkl. Django) i en fil, som Fly.io vil bruge i Dockerfile.<br>
+<br>
+✅ Eksempel på, hvordan din requirements.txt kan se ud:<br>
+txt<br>
+
+Django==4.2.4<br>
+gunicorn==21.2.0<br>
+psycopg2-binary==2.9.9<br>
+whitenoise==6.6.0<br>
+Disse pakker er typiske:<br>
+<br>
+Django: Selve frameworket.<br>
+<br>
+gunicorn: WSGI-server (Fly.io bruger ikke runserver).<br>
+<br>
+psycopg2-binary: PostgreSQL driver (hvis du bruger PostgreSQL).<br>
+<br>
+whitenoise: Til at serve statiske filer.<br>
+<br>
+🎯 Vigtigt:<br>
+Efter du har lavet requirements.txt, så:<br>
+<br>
+Tilføj og commit filen til Git:<br>
+<br>
+bash<br>
+<br>
+git add requirements.txt<br>
+git commit -m "Tilføj requirements.txt"<br>
+git push<br>
+Fly.io vil nu bruge den fil ved fly deploy.<br></h4>
+
+
 
 
 {% endblock content %}

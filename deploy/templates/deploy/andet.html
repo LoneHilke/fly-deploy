@@ -1,0 +1,554 @@
+{% extends 'deploy/base.html' %}
+{% block content %}
+<h1><i><b>Andre problemer jeg havde</b></i></h1>
+<br>
+<h3>Her kan ses nogle af de errors jeg hevde undervejs. <br>Måske det kan hjælpe dig videre</h3>
+<br>
+<h4><i>jeg kan ikke få den til at samarbejde med fly</i></h4>
+<h5>🔍 Lad os fejlfinde:<br>
+Svar gerne på disse punkter:<br>
+
+Hvad sker der helt konkret?<br>
+
+Får du en fejl, når du kører fly deploy?<br>
+
+Hvis ja, hvad er fejlen? (copy/paste gerne fejlbeskeden)<br>
+
+Har du disse filer i din projektmappe?<br>
+
+requirements.txt<br>
+
+Dockerfile<br>
+
+fly.toml<br>
+
+Hvad hedder din Django-projektmappe?<br>
+
+Det er mappen med settings.py.<br>
+
+Hvad er mappestrukturen? (copy-paste eller skriv)<br>
+Eksempel:<br>
+
+perl<br>
+<br>
+my-app/<br>
+├── manage.py<br>
+├── myproject/<br>
+│   ├── settings.py<br>
+│   └── wsgi.py<br>
+├── requirements.txt<br>
+├── Dockerfile<br>
+└── fly.toml<br>
+📦 Lad os teste fly deploy<br>
+Hvis du har alle filerne klar, så prøv at køre dette i roden af projektet:<br>
+<br>
+bash<br>
+<br>
+fly deploy --remote-only<br>
+Det bruger Fly's egen remote builder og undgår lokale Docker-problemer.<br>
+<br>
+🔥 Hvis du vil: Del fejlbeskeden<br>
+Hvis du ser noget som:<br>
+
+"build failed"<br>
+
+"module not found"<br>
+
+"can't find requirements.txt"<br>
+
+"could not import settings"<br>
+
+Så send fejlbeskeden her – jeg skal nok hjælpe dig punkt for punkt.</h5><br>
+<br>
+<h5><i>når jeg kører fly deploy kommer følgende: Error: failed to relaunch after updating: exec: "C:\\Users\\Bruger\\.fly\\bin\\fly.exe": file does not exist</i><br>
+    <br>
+    Ah, klart! Den fejl betyder, at Fly CLI ikke er installeret korrekt, eller at stien til fly.exe er blevet ødelagt – typisk på Windows.<br>
+
+🧨 Fejlbesked forklaret:<br>
+swift<br>
+
+Error: failed to relaunch after updating: exec: "C:\\Users\\Bruger\\.fly\\bin\\fly.exe": file does not exist<br>
+Det betyder:<br>
+
+Fly CLI prøvede at opdatere sig selv.<br>
+
+Men den nye fly.exe fil blev ikke fundet efter opdateringen.<br>
+
+✅ Løsning (Windows)<br>
+Vi fixer det ved at geninstallere Fly.io CLI manuelt:<br>
+
+1. Slet gammel Fly CLI<br>
+Slet denne mappe:<br>
+
+makefile<br>
+
+C:\Users\Bruger\.fly\<br>
+Du kan gøre det manuelt i Stifinder eller med PowerShell:<br>
+
+powershell<br>
+
+Remove-Item -Recurse -Force "$env:USERPROFILE\.fly"<br>
+2. Geninstaller Fly CLI<br>
+Brug den officielle installationskommando igen – men den virker ikke så godt på Windows via curl, så her er en bedre løsning:<br>
+
+👉 Brug PowerShell:<br>
+powershell<br>
+<br>
+iwr https://fly.io/install.ps1 -useb | iex<br>
+Det downloader og installerer Fly CLI igen til din brugerprofil.<br>
+<br>
+3. Genstart terminalen (vigtigt)<br>
+Luk din terminal (cmd / PowerShell / Git Bash), og åbn den igen for at opdatere PATH.<br>
+<br>
+4. Test installationen<br>
+Skriv:<br>
+<br>
+bash
+<br>
+fly version<br>
+Hvis du får en version tilbage (fx flyctl v0.2.X), så virker det!<br>
+<br>
+🧪 Nu: Prøv fly deploy igen<br>
+Når CLI'en er geninstalleret og virker, kør:<br>
+<br>
+bash<br>
+<br>
+fly deploy --remote-only<br>
+🎯 Bonus: Hvis det stadig fejler...<br>
+Så har vi en nødløsning: Du kan deploye fra GitHub direkte via Fly.io – uden at bruge lokal CLI.<br>
+<br>
+Vil du have hjælp til det? Det virker især godt hvis du allerede har projektet på GitHub.<br>
+<br>
+Giv lyd, så guider jeg dig helt igennem det næste skridt.<br>
+<br>
+
+
+
+
+
+
+
+Du sagde:<br>
+<i>jeg fik fejlen: ==> Verifying app config<br>
+Validating C:\Users\Bruger\Documents\GitHub\ideer-til\fly.toml<br>
+✓ Configuration is valid<br>
+--> Verified app config<br>
+Error: Could not find App "din-app-navn" da jeg kørte fly deploy --remote-only</i><br>
+<br>
+
+ChatGPT sagde:<br>
+Tak – det hjælper! Den fejl betyder, at din fly.toml-fil stadig har den placeholder "din-app-navn" i stedet for det rigtige navn på din Fly.io-app.<br>
+
+🛠️ Problemforklaring:<br>
+Fejlbeskeden:<br>
+<br>
+arduino<br>
+<br>
+Error: Could not find App "din-app-navn"<br>
+betyder:
+<br>
+👉 Fly leder efter en app med navnet "din-app-navn", men du har ikke oprettet en app med det navn – det er bare en skabelonværdi, som du selv skulle erstatte.<br>
+<br>
+✅ Løsning: Ret fly.toml<br>
+1. Åbn din fly.toml-fil<br>
+Find linjen der ligner dette:<br>
+<br>
+toml<br>
+<br>
+app = "din-app-navn"<br>
+2. Ændr den til dit rigtige app-navn<br>
+Du kan finde dit app-navn:<br>
+
+På https://fly.io/apps (hvis du har oprettet den før), eller<br>
+
+Opret en ny app med fly launch (se nedenfor)<br>
+
+Eksempel:<br>
+<br>
+toml
+<br>
+app = "ideer-til"<br>
+Hvis du ikke kan huske, hvad du kaldte din app, kør:<br>
+<br>
+bash
+<br>
+fly apps list<br>
+🧾 Hvis du aldrig har oprettet app'en<br>
+Så skal du oprette app'en først:<br>
+<br>
+bash
+<br>
+fly launch --no-deploy<br>
+Vælg:<br>
+
+App-navn (kan være ideer-til eller noget unikt)<br>
+
+Region (f.eks. ams)<br>
+
+Vælg nej til PostgreSQL<br>
+
+Fly laver automatisk en fly.toml med det rigtige app-navn.<br>
+
+✅ Derefter<br>
+Når fly.toml har den korrekte app-navn, kør:<br>
+<br>
+bash
+<br>
+fly deploy --remote-only<br>
+Vil du sende mig din fly.toml, så jeg hurtigt kan tjekke den for dig og rette den til, hvis du vil? Du kan bare copy-paste indholdet her.<br>
+
+
+
+
+
+
+
+
+Du sagde:<br>
+<i>jeg får denne fejl: Error: failed to fetch an image or build from source: invalid builder 'Docker': could not parse reference: Docker</i><br>
+
+<br>
+ChatGPT sagde:<br>
+Den fejl betyder, at din fly.toml-fil indeholder en forkert builder-værdi:<br>
+<br>
+vbnet
+<br>
+invalid builder 'Docker': could not parse reference: Docker<br>
+🛠️ Problemforklaring<br>
+I din fly.toml står der sandsynligvis:<br>
+<br>
+toml
+<br>
+[build]<br>
+  builder = "Docker"<br>
+Men builder = "Docker" er ikke gyldigt. Fly.io forventer enten:<br>
+
+Et billede fra Docker Hub (som "nginx:latest"),<br>
+
+En buildpack (builder = "paketobuildpacks/builder:base"), eller<br>
+
+At du slet ikke bruger builder, fordi du bruger en Dockerfile.<br>
+<br>
+✅ Løsning<br>
+🎯 Hvis du har en Dockerfile i projektmappen:<br>
+👉 Fjern hele [build] sektionen i fly.toml.<br>
+<br>
+Eksempel på korrekt fly.toml:<br>
+toml
+<br>
+app = "ideer-til"<br>
+
+[env]<br>
+  DEBUG = "False"<br>
+<br>
+[[services]]<br>
+  internal_port = 8000<br>
+  protocol = "tcp"<br>
+
+  [[services.ports]]<br>
+    handlers = ["http"]<br>
+    port = 80<br>
+
+  [[services.ports]]<br>
+    handlers = ["tls", "http"]<br>
+    port = 443<br>
+🧪 Efter rettelsen<br>
+Kør:<br>
+<br>
+bash
+<br>
+fly deploy --remote-only<br>
+💡 Bonus: Hvis du hellere vil bruge en builder (uden Dockerfile)<br>
+Hvis du ikke har en Dockerfile, og hellere vil bruge Fly’s Buildpacks, kan du i stedet skrive:<br>
+<br>
+toml
+<br>
+[build]<br>
+  builder = "paketobuildpacks/builder:base"<br>
+Men det kræver at din Django-app er sat op med Buildpacks i tankerne – normalt er Docker bedre for Django.<br>
+<br>
+✅ Klar til at få det deployet nu? Du må meget gerne sende mig din fly.toml, så kan jeg kontrollere den for dig hurtigt.<br>
+Du skriver<br>
+<i>
+i fly live logs får jeg følgende: 2025-07-01T08:33:52.691 app[2867546a642498] arn [info] [2025-07-01 08:33:52 +0000] [632] [ERROR] Shutting down: Master<br>
+
+2025-07-01T08:33:52.691 app[2867546a642498] arn [info] [2025-07-01 08:33:52 +0000] [632] [ERROR] Reason: Worker failed to boot.<br>
+
+2025-07-01T08:33:52.894 app[2867546a642498] arn [info] INFO Main child exited normally with code: 3<br>
+
+2025-07-01T08:33:52.909 app[2867546a642498] arn [info] INFO Starting clean up.<br>
+
+2025-07-01T08:33:52.918 app[2867546a642498] arn [info] WARN could not unmount /rootfs: EINVAL: Invalid argument<br>
+
+2025-07-01T08:33:52.919 app[2867546a642498] arn [info] [ 1.890009] reboot: Restarting system</i><br>
+<br>
+chat skriver:<br>
+<br>
+Tak – den fejl viser, at Gunicorn fejler under opstart:<br>
+<br>
+vbnet<br>
+<br>
+[ERROR] Reason: Worker failed to boot.<br>
+Det betyder, at Gunicorn forsøger at starte din Django-app, men noget går galt allerede under opstarten – ofte fordi:<br>
+
+Din wsgi.py-sti er forkert.<br>
+
+En SECRET_KEY eller anden env var mangler.<br>
+
+En Python-fejl i settings.py.<br>
+
+Eller statiske filer fejler (hvis collectstatic ikke er kørt).<br>
+<br>
+✅ Trin-for-trin fejlretning<br>
+✅ 1. Tjek Dockerfile's CMD-linje<br>
+Find linjen i din Dockerfile:<br>
+<br>
+dockerfile
+<br>
+CMD ["gunicorn", "???", "--bind", "0.0.0.0:8000"]<br>
+Du skal bruge:<br>
+<br>
+dockerfile
+<br>
+CMD ["gunicorn", "ditprojekt.wsgi:application", "--bind", "0.0.0.0:8000"]<br>
+Erstat ditprojekt med navnet på mappen hvor wsgi.py ligger (altså din Django-projektmappe – ikke hele repo'et).<br>
+<br>
+Eksempel:<br>
+
+css<br>
+
+myapp/<br>
+├── manage.py<br>
+├── myproject/<br>
+│   ├── __init__.py<br>
+│   ├── settings.py<br>
+│   ├── urls.py<br>
+│   └── wsgi.py ← dette navn skal stå i CMD-linjen<br>
+Så skal du bruge:<br>
+<br>
+dockerfile
+<br>
+CMD ["gunicorn", "myproject.wsgi:application", "--bind", "0.0.0.0:8000"]<br>
+✅ 2. Tjek dine fly secrets<br>
+Kør:<br>
+<br>
+bash
+<br>
+fly secrets list<br>
+Har du sat en SECRET_KEY? Hvis ikke, sæt den:<br>
+<br>
+bash
+<br>
+fly secrets set SECRET_KEY="noget-meget-hemmeligt"<br>
+I settings.py skal du have:<br>
+<br>
+python
+<br>
+SECRET_KEY = os.environ["SECRET_KEY"]<br>
+✅ 3. Kør collectstatic (vigtigt hvis du bruger whitenoise)<br>
+Fly-serveren fejler tit hvis collectstatic ikke er kørt, og STATIC_ROOT ikke eksisterer.<br>
+<br>
+Kør dette:
+<br>
+bash
+<br>
+fly ssh console<br>
+python manage.py collectstatic --noinput<br>
+exit<br>
+✅ 4. Se fejlen mere direkte<br>
+Kør:<br>
+<br>
+bash<br>
+<br>
+fly ssh console<br>
+python manage.py runserver<br>
+Hvis Django ikke starter, får du direkte en traceback med den konkrete Python-fejl – f.eks. manglende env var, forkert sti, eller noget i settings.py.<br>
+<br>
+Vil du sende:<br>
+<br>
+Din Dockerfile<br>
+<br>
+Din fly.toml<br>
+<br>
+Og navnet på mappen hvor settings.py og wsgi.py ligger?<br>
+<i>Du skrev:</i><br>
+når jeg kører: C:\Users\Bruger\Documents\GitHub\ideer-til>CMD ["gunicorn", "ideer.wsgi:application", "--bind", "0.0.0.0:8000"]<br>
+Microsoft Windows [Version 10.0.26100.4484]<br>
+(c) Microsoft Corporation. Alle rettigheder forbeholdes.<br>
+
+<br>
+ChatGPT sagde:<br>
+Tak — det du gjorde her var at kopiere CMD-linjen direkte fra Dockerfile og prøve at køre den i Windows’ kommandoprompt, hvilket ikke virker, fordi:<br>
+
+CMD ["gunicorn", "ideer.wsgi:application", "--bind", "0.0.0.0:8000"] er ikke en Windows-kommando — det er en Docker-instruktion.<br>
+
+✅ Hvad du bør gøre i stedet:<br>
+Hvis du vil teste app'en lokalt (uden Docker), skal du bruge almindelig Python/Django-kommando som:<br>
+<br>
+bash
+<br>
+python manage.py runserver<br>
+Men hvis du vil teste Gunicorn direkte på din maskine (hvis du har det installeret), kan du køre:<br>
+<br>
+bash
+<br>
+gunicorn ideer.wsgi:application<br>
+Dette skal du kun gøre inde i projektmappen, hvor ideer er din Django-projektmappe (den med settings.py og wsgi.py).<br>
+<br>
+✅ Fokus nu: Få Dockerfile og CMD korrekt<br>
+Din Dockerfile skal afsluttes med:<br>
+dockerfile<br>
+<br>
+CMD ["gunicorn", "ideer.wsgi:application", "--bind", "0.0.0.0:8000"]<br>
+Hvis dit projekt hedder ideer, og du har ideer/settings.py og ideer/wsgi.py, så er det korrekt.<br>
+<br>
+✅ Hurtigt tjek: Har du ideer/wsgi.py?<br>
+Åbn din projektmappe og se, om du har:<br>
+<br>
+
+ideer-til/<br>
+├── manage.py<br>
+├── ideer/<br>
+│   ├── settings.py<br>
+│   ├── wsgi.py   ← vigtigt!<br>
+│   └── urls.py<br>
+Hvis wsgi.py mangler, så crasher Gunicorn med “worker failed to boot”.<br>
+<br>
+✅ Næste skridt: Se præcis hvorfor din app fejler<br>
+Kør:<br>
+<br>
+bash
+<br>
+fly ssh console<br>
+Inde i serveren:<br>
+<br>
+bash
+<br>
+python manage.py runserver<br>
+Hvis der er en fejl i settings.py, manglende SECRET_KEY, eller forkert modul, får du den nu.<br>
+<br>
+Vil du sende mig:<br>
+
+dit Dockerfile-indhold<br>
+
+navn på projektmappen (den med settings.py)<br>
+
+og evt. fly.toml<br>
+
+Så retter jeg det hele til for dig 1:1 – og så skal det virke i næste deploy.<br>
+
+
+
+
+
+
+
+<br>
+<i>Du sagde:</i>
+Jeg har gunicorn installeret men når jeg kører gunicorn ideer.wsgi:application <br>                                              
+Traceback (most recent call last):<br>
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\runpy.py", line 196, in _run_module_as_main<br>
+    return _run_code(code, main_globals, None,<br>
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\runpy.py", line 86, in _run_code<br>
+    exec(code, run_globals)<br>
+  File "C:\Users\Bruger\Documents\GitHub\ideer-til\env_site\Scripts\gunicorn.exe\__main__.py", line 4, in <module><br>
+  File "C:\Users\Bruger\Documents\GitHub\ideer-til\env_site\lib\site-packages\gunicorn\app\wsgiapp.py", line 8, in <module><br>
+    from gunicorn.app.base import Application<br>
+  File "C:\Users\Bruger\Documents\GitHub\ideer-til\env_site\lib\site-packages\gunicorn\app\base.py", line 10, in <module><br>
+    from gunicorn import util<br>
+  File "C:\Users\Bruger\Documents\GitHub\ideer-til\env_site\lib\site-packages\gunicorn\util.py", line 7, in <module><br>
+    import fcntl<br>
+ModuleNotFoundError: No module named 'fcntl'<br>
+
+<br>
+ChatGPT sagde:<br>
+Perfekt — det her forklarer præcis hvorfor din app fejler på Fly.io.<br>
+
+🧨 Problemforklaring<br>
+Fejlen:<br>
+<br>
+vbnet
+<br>
+ModuleNotFoundError: No module named 'fcntl'<br>
+betyder:<br>
+
+Du prøver at køre Gunicorn på Windows, men Gunicorn kræver Unix/Linux, fordi det bruger fcntl, som ikke findes i Windows.<br>
+
+✅ Løsning og næste skridt<br>
+🔧 1. Ingen grund til at teste Gunicorn på Windows<br>
+Du kan ikke køre gunicorn ideer.wsgi:application på Windows – det vil altid fejle.<br>
+
+➡️ Det er helt okay, for Gunicorn er kun til produktion, og det kører fint på Fly.io (som bruger Linux).<br>
+
+✅ 2. Test i stedet med Django’s egen dev-server<br>
+Kør:<br>
+<br>
+bash
+<br>
+python manage.py runserver<br>
+Så kan du udvikle lokalt og sikre at din app virker, før du deployer til Fly.io.<br>
+<br>
+✅ 3. Sørg for korrekt Dockerfile<br>
+Fly.io bygger din app med Docker, så Gunicorn bliver kørt dér (på Linux, hvor det virker). Din Dockerfile skal til sidst indeholde:<br>
+<br>
+dockerfile
+<br>
+CMD ["gunicorn", "ideer.wsgi:application", "--bind", "0.0.0.0:8000"]<br>
+ideer er navnet på din Django-projektmappe med wsgi.py.<br>
+
+✅ 4. Deploy igen med:<br>
+bash
+<br>
+fly deploy --remote-only<br>
+Det bruger Fly.io’s server til at bygge og køre din app, hvor Gunicorn virker.<br>
+<br>
+🎁 Bonus: Vil du have hjælp til at skrive Dockerfile og fly.toml?<br>
+Bare send dem her, så tilretter jeg dem 1:1.<br>
+<br>
+Du er meget tæt på nu — det hele virker, så snart du lader Fly.io køre Gunicorn i stedet for at teste det lokalt på Windows 💪<br>
+
+
+<i>Du sagde:</i>
+(env_site) PS C:\Users\Bruger\Documents\GitHub\ideer-til> CMD ["gunicorn", "ideer.wsgi:application", "--bind", "0.0.0.0:8000"]<br>
+Microsoft Windows [Version 10.0.26100.4484]<br>
+(c) Microsoft Corporation. Alle rettigheder forbeholdes.<br>
+
+
+ChatGPT sagde:<br>
+Det ser ud til, at du igen har forsøgt at køre en Docker CMD-linje direkte i din PowerShell-terminal:<br>
+<br>
+powershell
+<br>
+CMD ["gunicorn", "ideer.wsgi:application", "--bind", "0.0.0.0:8000"]<br>
+🔴 Det virker ikke i PowerShell. CMD [...] er ikke en gyldig kommando i Windows – det er en instruks brugt inde i en Dockerfile, ikke i en terminal.<br>
+
+✅ Hvad du skal gøre i stedet<br>
+👉 Hvis du vil teste lokalt:<br>
+Kør Django’s udviklingsserver (som virker på Windows):<br>
+<br>
+bash
+<br>
+python manage.py runserver<br>
+Det er sådan man udvikler og tester på Windows.<br>
+
+👉 Hvis du vil deploye til Fly.io:<br>
+Din Dockerfile skal slutte med:<br>
+<br>
+dockerfile
+<br>
+CMD ["gunicorn", "ideer.wsgi:application", "--bind", "0.0.0.0:8000"]<br>
+Dette bliver kørt inde i containeren, ikke på din computer.<br>
+<br>
+Så skal du bare køre:<br>
+<br>
+bash
+<br>
+fly deploy --remote-only<br>
+Så bygger Fly.io din app på en Linux-server, hvor Gunicorn virker – og din app starter korrekt.<br>
+<br>
+🎯 Samlet:<br>
+Mål	Kør dette<br>
+Test lokalt i udvikling	python manage.py runserver<br>
+Deploy til Fly.io	fly deploy --remote-only<br>
+Kør Gunicorn i Docker (ikke lokalt)	CMD ["gunicorn", "ideer.wsgi:application", "--bind", "0.0.0.0:8000"] (i Dockerfile)</h5><br>
+{% endblock content %}
