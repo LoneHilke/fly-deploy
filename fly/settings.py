@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-2$b@-8j&yl1)$&5ivo#&m+0vc-5z=3=pi2@@$5os8m5^mcjrq!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://fly-deploy-hue58a.fly.dev']
 
 
 # Application definition
